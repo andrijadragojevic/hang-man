@@ -1,15 +1,20 @@
 :root {
-    --background-color: rgb(32, 0, 193);
+    --background-color: rgb(47, 0, 140);
     --text-color: white;
 }
 
+#shownResult,
+h2 {
+    font-family: 'Caveat', cursive;
+    font-weight: 500;
+}
 
 button {
     width: fit-content !important;
 }
 
 #odgovor {
-    letter-spacing: 10px;
+    letter-spacing: 15px;
 }
 
 .disabled-mouse {
@@ -19,6 +24,7 @@ button {
 body {
     background-color: var(--background-color);
     color: var(--text-color);
+    
 }
 
 /*
@@ -40,5 +46,5 @@ img {
 }
 
 #shownResult {
-    font-size: 60px;
+    font-size: 70px;
 }
