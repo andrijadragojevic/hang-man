@@ -1,3 +1,9 @@
+:root {
+    --background-color: rgb(32, 0, 193);
+    --text-color: white;
+}
+
+
 button {
     width: fit-content !important;
 }
@@ -7,5 +13,32 @@ button {
 }
 
 .disabled-mouse {
-    pointer-events: none;
+    pointer-events: inherit;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/*
+img {
+    filter: brightness(0%);
+}
+*/
+
+img {
+    width: 50%;
+}
+
+#modal-button {
+    visibility: hidden;
+}
+
+.modal {
+    color: black;
+}
+
+#shownResult {
+    font-size: 60px;
 }

@@ -1,107 +1,104 @@
-// niz objekata koji predstavljaju oblast i ponudjene rijeci
-const pitanja = [{
-    oblast: "Pogodite grad u Crnoj Gori",
-    ponudjeno: [
-      "podgorica",
-      "budva",
-      "bar",
-      "kolašin",
-      "danilovgrad",
-      "tivat",
-      "kotor"
-    ]
-  },
-  {
-    oblast: "Pogodite programski jezik",
-    ponudjeno: [
-      "javascript",
-      "php",
-      "python",
-      "cpp",
-      "csharp",
-      "kotlin"
-    ]
-  }
-];
+
+//  Random word generator
+
+api_url = 'https://random-word-api.vercel.app/api?words=1';
+
+fetchRandomWord(api_url);
+
+var shownResult = ``;
+
+function fetchRandomWord(url) {
+  fetch(url)
+    .then(response => {
+      return response.json();
+    }).then(data => {
+      result = data[0];
+      fetchHints(`https://wordsapiv1.p.mashape.com/words/${result}`)
+      game(result);
+    })
+}
+
+function fetchHints(url) {
+  fetch(url)
+  .then(response => {
+    return response.json();
+  }).then(data => {
+    hints = JSON.stringify(data);
+    console.log(hints);
+  })
+}
+
+function game(result) {
+  let abeceda = "qwertyuiopasdfghjklzxcvbnm";
+  abeceda = abeceda.split("")
+
+  var mistakes = 0;
+
+  var buttonsHTML = ``;
+  var letterClicked = ``;
+
+
+  result.split("").forEach(() => shownResult += "_");
+
+
+  document.querySelector("#odgovor>h1").innerHTML = shownResult;
+  document.getElementById("hangman-image").innerHTML = `<img src="img/${mistakes}.png" alt="">`
+
+  //  Generating buttons
+  abeceda.forEach(letter => {
+    buttonsHTML += `
+              <button class='btn btn-primary p-3 me-1 mb-1' data-letterclicked='${letter}' id='button-${letter}'>
+                  ${letter.toUpperCase()}
+              </button>`
+  });
+  document.getElementById("letters").innerHTML = buttonsHTML;
 
 
 
-var randomPitanje = pitanja[Math.floor(Math.random() * pitanja.length)];
-var randomOblast = randomPitanje.oblast;
-var result = randomPitanje.ponudjeno[Math.floor(Math.random() * randomPitanje.ponudjeno.length)];
 
-var shownResult = '';
-
-result.split("").forEach(slovo => shownResult += "_")
-
-
-document.querySelector("#naziv-oblasti>h2").innerHTML = randomOblast;
-
-document.querySelector("#odgovor>h1").innerHTML = shownResult;
-
-document.getElementById("result").innerHTML = result;
-
-var gameOver = false;
+  //  BUTTONS
+  document.querySelectorAll('button').forEach(letter => {
+    letter.addEventListener("click", (element) => {
+      letterClicked = element.target.dataset.letterclicked
+      element.target.classList.add("disabled");
 
 
-let abeceda = ['a', 'b', 'c', 'č', 'ć', 'd', 'dž', 'đ', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'lj', 'm', 'n', 'nj', 'o', 'p', 'r', 's', 'š', 't', 'u', 'v', 'z', 'ž', 'y'];
-
-var mistakes = 0;
-
-var buttonsHTML = ``;
-var letterClicked = ``;
-var imageHTML = ``;
-
-document.getElementById("hangman-image").innerHTML = `<img src="img/${mistakes}.png" alt="">`
-
-
-abeceda.forEach(letter => {
-  buttonsHTML += `
-            <button class='btn btn-primary me-1' data-letterclicked='${letter}' id='button-${letter}'>
-                ${letter.toUpperCase()}
-            </button>`
-});
-
-document.getElementById("letters").innerHTML = buttonsHTML;
-
-
-var index;
-
-document.querySelectorAll('button').forEach(letter => {
-  letter.addEventListener("click", (element) => {
-    letterClicked = element.target.dataset.letterclicked
-    element.target.classList.add("disabled");
-    if (mistakes < 6) {
-      if (result.indexOf(letterClicked) != -1) {
-        shownResult = replaceAll(letterClicked)
-        document.querySelector("#odgovor>h1").innerHTML = shownResult;
-        if (shownResult.toLowerCase() == result) {
-          document.querySelector("body").classList.add("disabled-mouse")
-          alert("YOU WON")
+      if (mistakes < 6) {
+        if (result.indexOf(letterClicked) != -1) {
+          shownResult = replaceAll(letterClicked)
+          document.querySelector("#odgovor>h1").innerHTML = shownResult;
+          if (shownResult.toLowerCase() == result) {
+            document.querySelector("body").classList.add("disabled-mouse")
+            document.querySelector(".modal-body").innerHTML = `<h1>CONGRATULATIONS YOU WON! :)</h1>`
+            document.getElementById("modal-button").click();
+          }
+        } else {
+          console.log(letterClicked)
+          mistakes += 1;
+          document.getElementById("hangman-image").innerHTML = `<img src="img/${mistakes}.png" alt="">`
+          if (mistakes == 6) {
+            document.querySelector("body").classList.add("disabled-mouse")
+            document.querySelector(".modal-body").innerHTML = `<h1>YOU LOST! :(</h1>`
+            document.getElementById("modal-button").click();
+            document.querySelector("#odgovor>h1").innerHTML = result.toUpperCase();
+          }
         }
       } else {
-        mistakes += 1;
-        document.getElementById("hangman-image").innerHTML = `<img src="img/${mistakes}.png" alt="">`
-        if (mistakes == 6) {
-          document.querySelector("body").classList.add("disabled-mouse")
-          alert("GAME OVER");
-        }
+
       }
-    } else {
-      
-    }
 
+    })
   })
-})
 
+}
 
 
 function replaceAll(replace) {
   let index = 0;
   let arrayResult = result.split("");
   let arrayShownResult = shownResult.split("")
-  arrayShownResult.forEach(char => {
-    if (arrayResult[index] == letterClicked) {
+  arrayShownResult.forEach(() => {
+    if (arrayResult[index] == replace) {
       console.log("nadjeno slovo")
       arrayShownResult[index] = replace.toUpperCase();
     }
@@ -110,8 +107,6 @@ function replaceAll(replace) {
   return arrayShownResult.join("");
 
 }
-
-
 
 
 //        Shown result:
