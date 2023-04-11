@@ -1,0 +1,11 @@
+button {
+    width: fit-content !important;
+}
+
+#odgovor {
+    letter-spacing: 10px;
+}
+
+.disabled-mouse {
+    pointer-events: none;
+}
