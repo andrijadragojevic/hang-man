@@ -13,7 +13,7 @@ button {
 }
 
 .disabled-mouse {
-    pointer-events: inherit;
+    pointer-events: none;
 }
 
 body {
