@@ -42,7 +42,7 @@ function game(result) {
 
 
   document.querySelector("#odgovor>h1").innerHTML = shownResult;
-  document.getElementById("hangman-image").innerHTML = `<img src="img/${mistakes}.png" alt="">`
+  document.getElementById("hangman-image").innerHTML = `<img src="img/${mistakes}.png" alt="" loading="lazy">`
 
   //  Generating buttons
   abeceda.forEach(letter => {
