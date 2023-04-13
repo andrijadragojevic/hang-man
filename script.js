@@ -1,4 +1,3 @@
-
 //  Random word generator
 
 api_url = 'https://random-word-api.vercel.app/api?words=1';
@@ -20,12 +19,12 @@ function fetchRandomWord(url) {
 
 function fetchHints(url) {
   fetch(url)
-  .then(response => {
-    return response.json();
-  }).then(data => {
-    hints = JSON.stringify(data);
-    console.log(hints);
-  })
+    .then(response => {
+      return response.json();
+    }).then(data => {
+      hints = JSON.stringify(data);
+      console.log(hints);
+    })
 }
 
 function game(result) {
@@ -33,17 +32,13 @@ function game(result) {
   abeceda = abeceda.split("")
 
   var mistakes = 0;
-
   var buttonsHTML = ``;
   var letterClicked = ``;
 
-
   result.split("").forEach(() => shownResult += "_");
-
 
   document.querySelector("#odgovor>h1").innerHTML = shownResult;
   document.getElementById("hangman-image").innerHTML = `<img src="img/${mistakes}.png" alt="..." loading="lazy">`
-  //document.getElementById("picture").setAttribute("src", `img/${mistakes}.png`);
   //  Generating buttons
   abeceda.forEach(letter => {
     buttonsHTML += `
@@ -53,15 +48,11 @@ function game(result) {
   });
   document.getElementById("letters").innerHTML = buttonsHTML;
 
-
-
-
   //  BUTTONS
   document.querySelectorAll('button').forEach(letter => {
     letter.addEventListener("click", (element) => {
       letterClicked = element.target.dataset.letterclicked
       element.target.classList.add("disabled");
-
 
       if (mistakes < 6) {
         if (result.indexOf(letterClicked) != -1) {
@@ -83,15 +74,10 @@ function game(result) {
             document.querySelector("#odgovor>h1").innerHTML = result.toUpperCase();
           }
         }
-      } else {
-
-      }
-
+      } else {}
     })
   })
-
 }
-
 
 function replaceAll(replace) {
   let index = 0;
@@ -105,7 +91,6 @@ function replaceAll(replace) {
     index += 1;
   })
   return arrayShownResult.join("");
-
 }
 
 
@@ -117,5 +102,5 @@ function replaceAll(replace) {
 //        T I V A T
 
 
-// loop tru result to find index of the clicked letter
-// replace the letter at that index with the clicked letter in shown result
+// loop trough result to find index of the clicked letter
+// replace the letter at that index with the clicked letter in shownResult
