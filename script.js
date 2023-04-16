@@ -12,20 +12,10 @@ function fetchRandomWord(url) {
       return response.json();
     }).then(data => {
       result = data[0];
-      fetchHints(`https://wordsapiv1.p.mashape.com/words/${result}`)
       game(result);
     })
 }
 
-function fetchHints(url) {
-  fetch(url)
-    .then(response => {
-      return response.json();
-    }).then(data => {
-      hints = JSON.stringify(data);
-      console.log(hints);
-    })
-}
 
 function game(result) {
   let abeceda = "qwertyuiopasdfghjklzxcvbnm";
@@ -42,39 +32,44 @@ function game(result) {
   //  Generating buttons
   abeceda.forEach(letter => {
     buttonsHTML += `
-              <button class='btn btn-primary p-3 me-1 mb-1' data-letterclicked='${letter}' id='button-${letter}'>
+              <button class='btn letter-button btn-primary p-3 me-1 mb-1' data-letterclicked='${letter}' id='button-${letter}'>
                   ${letter.toUpperCase()}
               </button>`
   });
   document.getElementById("letters").innerHTML = buttonsHTML;
 
   //  BUTTONS
-  document.querySelectorAll('button').forEach(letter => {
+  document.querySelectorAll('.letter-button').forEach(letter => {
     letter.addEventListener("click", (element) => {
-      letterClicked = element.target.dataset.letterclicked
+      letterClicked = element.target.dataset.letterclicked;
       element.target.classList.add("disabled");
 
       if (mistakes < 6) {
-        if (result.indexOf(letterClicked) != -1) {
-          shownResult = replaceAll(letterClicked)
+        if (result.indexOf(letterClicked) != -1) { //  <-- If (letter found)
+          shownResult = replaceAll(letterClicked);
           document.querySelector("#odgovor>h1").innerHTML = shownResult;
           if (shownResult.toLowerCase() == result) {
-            document.querySelector("body").classList.add("disabled-mouse")
-            document.querySelector(".modal-body").innerHTML = `<h1>CONGRATULATIONS YOU WON! :)</h1>`
+            document.querySelector("body").classList.add("disabled-mouse");
+            document.querySelector(".modal-body").innerHTML = `<h1>CONGRATULATIONS YOU WON! :)</h1>`;
+            document.getElementById("hangman-image").innerHTML = `<img src="img/win.png" alt="">`;
             document.getElementById("modal-button").click();
           }
         } else {
-          console.log(letterClicked)
+          console.log(letterClicked);
           mistakes += 1;
-          document.getElementById("hangman-image").innerHTML = `<img src="img/${mistakes}.png" alt="">`
+          console.log("Mistake MADE");
+          document.getElementById("hangman-image").innerHTML = `<img src="img/${mistakes}.png" alt="">`;
           if (mistakes == 6) {
-            document.querySelector("body").classList.add("disabled-mouse")
-            document.querySelector(".modal-body").innerHTML = `<h1>YOU LOST! :(</h1>`
+            console.log("Player LOST");
+            document.querySelector("body").classList.add("disabled-mouse");
+            document.querySelector(".modal-body").innerHTML = `<h1>YOU LOST! :(</h1>`;
             document.getElementById("modal-button").click();
             document.querySelector("#odgovor>h1").innerHTML = result.toUpperCase();
           }
         }
-      } else {}
+      } else {
+
+      }
     })
   })
 }
